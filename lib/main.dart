@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:suggestr/data.dart';
 
+const List<String> days = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'];
+
 void main() {
   runApp(MyApp());
 }
@@ -27,6 +29,7 @@ class Suggestr extends StatefulWidget {
 
 class _SuggestrState extends State<Suggestr> {
   List<Suggestion> currentSuggestions;
+  List<Suggestion> selectedMeals = List.generate(7, (index) => null);
 
   @override
   void initState() {
@@ -36,30 +39,31 @@ class _SuggestrState extends State<Suggestr> {
 
   List<Suggestion> getNewSuggestions() {
     suggestions.shuffle();
-    return suggestions.getRange(0, 12).toList();
-  }
-
-  void generateNewSuggestion(int index) {
-    setState(() {
-      suggestions.shuffle();
-      currentSuggestions[index] = suggestions[0];
-    });
+    List<Suggestion> temp = suggestions.getRange(0, 12).toList();
+    temp[0] = somethingNew;
+    return temp;
   }
 
   String exportSuggestions() {
     String result = '';
     for (int i = 0; i < 7; i++) {
-      result += days[i];
-      result += ':\n';
-      result += currentSuggestions[i].name;
-      result += '\n';
-      result += currentSuggestions[i].description;
-      result += '\n\n';
+      if (selectedMeals[i] != null) {
+        result += days[i];
+        result += ':\n';
+        result += selectedMeals[i].name;
+        result += '\n';
+        result += selectedMeals[i].description;
+        result += '\n\n';
+      }
     }
     return result;
   }
 
-  static const List<String> days = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'];
+  void onSuggestionChanged(int index, Suggestion newSuggestion) {
+    setState(() {
+      selectedMeals[index] = newSuggestion;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,11 @@ class _SuggestrState extends State<Suggestr> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ...days.map((String day) => Day(day)),
+                ...days
+                    .asMap()
+                    .entries
+                    .map((entry) => Day(entry.key, selectedMeals[entry.key], onSuggestionChanged))
+                    .toList(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
                   child: RaisedButton(
@@ -92,7 +100,7 @@ class _SuggestrState extends State<Suggestr> {
               ],
             ),
           ),
-          Suggestions(currentSuggestions, generateNewSuggestion),
+          Suggestions(currentSuggestions),
         ],
       ),
     );
@@ -100,30 +108,67 @@ class _SuggestrState extends State<Suggestr> {
 }
 
 class Day extends StatefulWidget {
-  final String day;
-  Day(this.day);
+  final int dayIndex;
+  final Suggestion suggestion;
+  final Function onSuggestionChanged;
+  Day(this.dayIndex, this.suggestion, this.onSuggestionChanged);
 
   @override
   _DayState createState() => _DayState();
 }
 
 class _DayState extends State<Day> {
-  Suggestion suggestion;
   Suggestion hoveredSuggestion;
+  TextEditingController controller = TextEditingController();
 
   Widget image() {
     if (hoveredSuggestion != null) return hoveredSuggestion.getImage(150, 200);
-    if (suggestion != null) return suggestion.getImage(150, 200);
+    if (widget.suggestion != null) return widget.suggestion.getImage(150, 200);
     return Container();
+  }
+
+  showNameDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        void onSubmit() {
+          setState(() {
+            Suggestion old = widget.suggestion;
+            widget.onSuggestionChanged(widget.dayIndex, Suggestion(controller.text, old.pictureUrl, old.description));
+            Navigator.of(context).pop();
+          });
+        }
+
+        return AlertDialog(
+          content: TextField(
+            autofocus: true,
+            onSubmitted: (s) => onSubmit(),
+            controller: controller,
+            decoration: InputDecoration(labelText: 'What do you want to cook?'),
+          ),
+          actions: [
+            RaisedButton(
+              child: Text('Confirm'),
+              onPressed: () => onSubmit(),
+            )
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return DragTarget<Suggestion>(
-      onAccept: (s) => setState(() {
-        suggestion = s;
-        hoveredSuggestion = null;
-      }),
+      onAccept: (s) {
+        setState(() {
+          hoveredSuggestion = null;
+        });
+        widget.onSuggestionChanged(widget.dayIndex, s);
+        if (s.name == 'Something New') {
+          showNameDialog();
+        }
+      },
       onWillAccept: (s) {
         setState(() {
           hoveredSuggestion = s;
@@ -142,10 +187,10 @@ class _DayState extends State<Day> {
             color: Colors.grey,
             child: image(),
           ),
-          if (suggestion != null)
+          if (widget.suggestion != null)
             Positioned(
               child: Text(
-                suggestion.name,
+                widget.suggestion.name,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -157,7 +202,7 @@ class _DayState extends State<Day> {
             ),
           Positioned(
             child: Text(
-              widget.day,
+              days[widget.dayIndex],
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
@@ -174,8 +219,7 @@ class _DayState extends State<Day> {
 
 class Suggestions extends StatelessWidget {
   final List<Suggestion> suggestions;
-  final Function generateNewSuggestion;
-  Suggestions(this.suggestions, this.generateNewSuggestion);
+  Suggestions(this.suggestions);
 
   final double width = 400;
   final double height = 250;
@@ -211,7 +255,7 @@ class Suggestions extends StatelessWidget {
     );
   }
 
-  Widget buildSuggestion(int index, Suggestion suggestion, Function generateNewSuggestion) {
+  Widget buildSuggestion(int index, Suggestion suggestion) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Draggable<Suggestion>(
@@ -232,8 +276,7 @@ class Suggestions extends StatelessWidget {
       child: Wrap(
           children: suggestions
               .asMap()
-              .map((int index, Suggestion suggestion) =>
-                  MapEntry(index, buildSuggestion(index, suggestion, generateNewSuggestion)))
+              .map((int index, Suggestion suggestion) => MapEntry(index, buildSuggestion(index, suggestion)))
               .values
               .toList()),
     );

@@ -17,6 +17,12 @@ class Suggestion {
   }
 }
 
+final Suggestion somethingNew = Suggestion(
+  'Something New',
+  'something_new.jpg',
+  'And now, for something completely different...',
+);
+
 final List<Suggestion> suggestions = [
   Suggestion(
     'Aloo Paratha',
@@ -60,8 +66,8 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Käsespätzle',
-    '',
-    '',
+    'kasespatzle.jpg',
+    'zB https://www.gutekueche.at/spaetzleteig-rezept-3858, dann mit Käse (Emmentaler) und Lauch überbacken',
   ),
   Suggestion(
     'Wild Rice and Mushroom Burger',
