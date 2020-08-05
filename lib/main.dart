@@ -64,6 +64,10 @@ class _SuggestrState extends State<Suggestr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.refresh),
+        onPressed: () => setState(() => currentSuggestions = getNewSuggestions()),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -88,10 +92,6 @@ class _SuggestrState extends State<Suggestr> {
               ],
             ),
           ),
-          //RaisedButton(
-          //child: Text('New Suggestions'),
-          //onPressed: () => setState(() => currentSuggestions = getNewSuggestions()),
-          //),
           Suggestions(currentSuggestions, generateNewSuggestion),
         ],
       ),
@@ -119,7 +119,6 @@ class _DayState extends State<Day> {
 
   @override
   Widget build(BuildContext context) {
-    print(suggestion);
     return DragTarget<Suggestion>(
       onAccept: (s) => setState(() {
         suggestion = s;
