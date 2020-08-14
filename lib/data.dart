@@ -25,6 +25,16 @@ final Suggestion somethingNew = Suggestion(
 
 final List<Suggestion> suggestions = [
   Suggestion(
+    'Auberginen Gyros',
+    'auberginen_gyros.jpg',
+    'Greek Cookbook',
+  ),
+  Suggestion(
+    'Avocado Pesto with Fried Halloumi',
+    'avocado_pesto.jpg',
+    'Greek Cookbook',
+  ),
+  Suggestion(
     'Aloo Paratha',
     '',
     "https://www.vegrecipesofindia.com/aloo-paratha-indian-bread-stuffed-with-potato-filling/",
@@ -101,7 +111,7 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Massaman Curry',
-    '',
+    'massaman_curry.jpg',
     'Asien Vegetarisch - page 114',
   ),
   Suggestion(
