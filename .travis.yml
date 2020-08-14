@@ -8,7 +8,7 @@ before_script:
 script:
 - flutter build web --release
 before_deploy:
-- openssl aes-256-cbc -K deploy_rsa_key -iv deploy_rsa_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
+- openssl aes-256-cbc -K deploy_rsa -in deploy_rsa.enc -out /tmp/deploy_rsa -d
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/deploy_rsa
 - ssh-add /tmp/deploy_rsa
