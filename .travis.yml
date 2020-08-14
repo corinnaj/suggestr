@@ -1,11 +1,12 @@
 addons:
   ssh_known_hosts: "tmbe.me"
 before_script:
-- git clone https://github.com/flutter/flutter.git -b beta
+- git clone https://github.com/flutter/flutter.git
 - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
 - flutter config --enable-web
+- flutter doctor
 script:
-- flutter build web
+- flutter build web --release
 before_deploy:
 - openssl aes-256-cbc -K deploy_rsa_key -iv deploy_rsa_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d
 - eval "$(ssh-agent -s)"
