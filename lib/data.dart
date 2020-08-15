@@ -1,11 +1,14 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class Suggestion {
   final String name;
   final String pictureUrl;
   final String description;
+  final bool prepareInAdvance;
 
-  Suggestion(this.name, this.pictureUrl, this.description);
+  Suggestion(this.name, this.pictureUrl, this.description, {this.prepareInAdvance = false});
 
   Image getImage(double width, double height) {
     return Image.asset(
@@ -25,6 +28,12 @@ final Suggestion somethingNew = Suggestion(
 
 final List<Suggestion> suggestions = [
   Suggestion(
+    'Falafel',
+    '',
+    'https://www.bonappetit.com/recipe/fresh-herb-falafel',
+    prepareInAdvance: true,
+  ),
+  Suggestion(
     'Auberginen Gyros',
     'auberginen_gyros.jpg',
     'Greek Cookbook',
@@ -43,6 +52,7 @@ final List<Suggestion> suggestions = [
     'Lebanese Chickpeas',
     'lebanese_chickpeas.jpg',
     'TODO',
+    prepareInAdvance: true,
   ),
   Suggestion(
     'Garlic Chicken',
@@ -58,6 +68,7 @@ final List<Suggestion> suggestions = [
     'Dosa & Aloo Masala',
     '',
     "https://cooking.nytimes.com/recipes/1020908-dosa?action=click&module=Global%20Search%20Recipe%20Card&pgType=search&rank=1",
+    prepareInAdvance: true,
   ),
   Suggestion(
     'Pad Thai',
@@ -68,6 +79,7 @@ final List<Suggestion> suggestions = [
     'Pizza',
     '',
     '',
+    prepareInAdvance: true,
   ),
   Suggestion(
     'Bolognese',
@@ -92,7 +104,7 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Little Italy Burger',
     '',
-    '',
+    'Burger Cookbook',
   ),
   Suggestion(
     'Kung Pao Cauliflower',
@@ -103,6 +115,7 @@ final List<Suggestion> suggestions = [
     'Kidney Bean Burger',
     '',
     'Asien Vegetarisch - page ?',
+    prepareInAdvance: true,
   ),
   Suggestion(
     'Butter Cauliflower',
@@ -133,6 +146,7 @@ final List<Suggestion> suggestions = [
     'Chilli',
     '',
     '',
+    prepareInAdvance: true,
   ),
   Suggestion(
     'Aloo Gobi',
@@ -143,6 +157,31 @@ final List<Suggestion> suggestions = [
     'Fennel Spaghetti',
     '',
     'https://www.bbcgoodfood.com/recipes/fennel-spaghetti',
+  ),
+  Suggestion(
+    'Pumpkin Soup',
+    '',
+    '',
+  ),
+  Suggestion(
+    'Holi Burger',
+    '',
+    'Burger Cookbook',
+  ),
+  Suggestion(
+    'Parsley Walnut Pesto',
+    '',
+    '',
+  ),
+  Suggestion(
+    'Arrabiata',
+    '',
+    '',
+  ),
+  Suggestion(
+    'Pasta Salad',
+    '',
+    'https://minimalistbaker.com/curried-cauliflower-rice-with-lentils-crispy-shallot-mujadara-inspired/',
   ),
   Suggestion(
     'Lemon Tofu',
