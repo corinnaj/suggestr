@@ -98,7 +98,7 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Banh Mi',
-    '',
+    'banh_mi.jpg',
     'https://www.pickuplimes.com/single-post/2020/01/23/TOFU-VIETNAMESE-SUB-B%C3%81NH-M%C3%8C',
   ),
   Suggestion(
@@ -188,4 +188,9 @@ final List<Suggestion> suggestions = [
     'lemon_tofu.jpg',
     'Lemon Tofu: https://www.reddit.com/r/VegRecipes/comments/hk6lad/sticky_lemon_pepper_tofu/, goes well with rice and vegetables in a soy/oyster sauce with some lemon',
   ),
+  Suggestion(
+    'Filled Zucchini',
+    'filled_zucchini.jpg',
+    'Photo in the Cmontland Group',
+  )
 ];
