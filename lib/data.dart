@@ -99,7 +99,7 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Banh Mi',
     'banh_mi.jpg',
-    'https://www.pickuplimes.com/single-post/2020/01/23/TOFU-VIETNAMESE-SUB-B%C3%81NH-M%C3%8C',
+    'https://www.pickuplimes.com/single-post/2020/01/23/TOFU-VIETNAMESE-SUB-B%C3%81NH-M%C3%8C, optionally with homemade Baguette: https://tasteofartisan.com/french-baguette-recipe/',
   ),
   Suggestion(
     'Little Italy Burger',
@@ -192,5 +192,10 @@ final List<Suggestion> suggestions = [
     'Filled Zucchini',
     'filled_zucchini.jpg',
     'Photo in the Cmontland Group',
-  )
+  ),
+  Suggestion(
+    'Texas Burger',
+    '',
+    'Burger Cookbook',
+  ),
 ];
