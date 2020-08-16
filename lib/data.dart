@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class Suggestion {
@@ -10,7 +8,7 @@ class Suggestion {
 
   Suggestion(this.name, this.pictureUrl, this.description, {this.prepareInAdvance = false});
 
-  Image getImage(double width, double height) {
+  Image getImage({double width, double height}) {
     return Image.asset(
       pictureUrl == '' ? 'images/image_missing.jpg' : 'images/' + pictureUrl,
       fit: BoxFit.cover,
