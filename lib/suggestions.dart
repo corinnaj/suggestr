@@ -8,7 +8,17 @@ class Suggestions extends StatelessWidget {
   final double width = 400;
   final double height = 240;
 
-  Widget buildChild(Suggestion suggestion, {bool dragging = false}) {
+  double getFontSize(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    if (width > 1500)
+      return 30;
+    else if (width > 1000)
+      return 26;
+    else if (width > 500) return 22;
+    return 18;
+  }
+
+  Widget buildChild(BuildContext context, Suggestion suggestion, {bool dragging = false}) {
     return Container(
       width: width,
       height: height,
@@ -30,7 +40,7 @@ class Suggestions extends StatelessWidget {
               suggestion.name,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 30,
+                  fontSize: getFontSize(context),
                   shadows: [Shadow(color: Colors.black, blurRadius: 4), Shadow(color: Colors.black, blurRadius: 8)]),
             ),
           ),
@@ -39,7 +49,7 @@ class Suggestions extends StatelessWidget {
     );
   }
 
-  Widget buildSuggestion(int index, Suggestion suggestion) {
+  Widget buildSuggestion(BuildContext context, int index, Suggestion suggestion) {
     return Container(
       width: width,
       height: height,
@@ -48,9 +58,9 @@ class Suggestions extends StatelessWidget {
           opacity: 0.5,
           child: suggestion.getImage(width: 100, height: 60),
         ),
-        childWhenDragging: buildChild(suggestion, dragging: true),
+        childWhenDragging: buildChild(context, suggestion, dragging: true),
         data: suggestion,
-        child: buildChild(suggestion),
+        child: buildChild(context, suggestion),
       ),
     );
   }
@@ -67,7 +77,7 @@ class Suggestions extends StatelessWidget {
           childAspectRatio: (width / height),
           children: suggestions
               .asMap()
-              .map((int index, Suggestion suggestion) => MapEntry(index, buildSuggestion(index, suggestion)))
+              .map((int index, Suggestion suggestion) => MapEntry(index, buildSuggestion(context, index, suggestion)))
               .values
               .toList()),
     );
