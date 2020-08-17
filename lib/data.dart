@@ -27,7 +27,7 @@ final Suggestion somethingNew = Suggestion(
 final List<Suggestion> suggestions = [
   Suggestion(
     'Falafel',
-    '',
+    'falafel.jpg',
     'https://www.bonappetit.com/recipe/fresh-herb-falafel',
     prepareInAdvance: true,
   ),
