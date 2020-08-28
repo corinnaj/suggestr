@@ -34,22 +34,22 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Auberginen Gyros',
     'auberginen_gyros.jpg',
-    'Greek Cookbook',
+    'The Greek Vegetarian Cookbook - page 212',
   ),
   Suggestion(
     'Avocado Pesto with Fried Halloumi',
     'avocado_pesto.jpg',
-    'Greek Cookbook',
+    'The Greek Vegetarian Cookbook - page 144',
   ),
   Suggestion(
     'Aloo Paratha',
     '',
-    "https://www.vegrecipesofindia.com/aloo-paratha-indian-bread-stuffed-with-potato-filling/",
+    'https://www.vegrecipesofindia.com/aloo-paratha-indian-bread-stuffed-with-potato-filling/',
   ),
   Suggestion(
     'Lebanese Chickpeas',
     'lebanese_chickpeas.jpg',
-    'TODO',
+    'Orientalish Vegetarisch - page 206',
     prepareInAdvance: true,
   ),
   Suggestion(
@@ -65,7 +65,7 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Dosa & Aloo Masala',
     '',
-    "https://cooking.nytimes.com/recipes/1020908-dosa?action=click&module=Global%20Search%20Recipe%20Card&pgType=search&rank=1",
+    'https://cooking.nytimes.com/recipes/1020908-dosa',
     prepareInAdvance: true,
   ),
   Suggestion(
@@ -87,7 +87,7 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Käsespätzle',
     'kasespatzle.jpg',
-    'zB https://www.gutekueche.at/spaetzleteig-rezept-3858, dann mit Käse (Emmentaler) und Lauch überbacken',
+    'zB https://emmikochteinfach.de/selbstgemachte-spaetzle/ and https://www.chefkoch.de/rezepte/1062121211526182/Schnelle-Kaesespaetzle.html',
   ),
   Suggestion(
     'Wild Rice and Mushroom Burger',
@@ -106,13 +106,13 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Kung Pao Cauliflower',
-    '',
+    'cauliflower_kung_pao.jpg',
     '',
   ),
   Suggestion(
     'Kidney Bean Burger',
     '',
-    'Asien Vegetarisch - page ?',
+    '',
     prepareInAdvance: true,
   ),
   Suggestion(
@@ -179,7 +179,7 @@ final List<Suggestion> suggestions = [
   Suggestion(
     'Pasta Salad',
     '',
-    'https://minimalistbaker.com/curried-cauliflower-rice-with-lentils-crispy-shallot-mujadara-inspired/',
+    'https://www.lecker.de/nudelsalat-mit-getrockneten-tomaten-und-basilikum-31455.html',
   ),
   Suggestion(
     'Lemon Tofu',
@@ -195,5 +195,15 @@ final List<Suggestion> suggestions = [
     'Texas Burger',
     '',
     'Burger Cookbook',
+  ),
+  Suggestion(
+    'Dum Aloo',
+    'dum_aloo.jpg',
+    'https://www.cilantroandcitronella.com/potato-curry-dum-aloo/',
+  ),
+  Suggestion(
+    'Summer Rolls',
+    'summer_rolls.jpg',
+    '',
   ),
 ];
