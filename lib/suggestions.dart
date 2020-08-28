@@ -1,93 +1,50 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:suggestr/data.dart';
-
-enum Size { VerySmall, Small, Medium, Large }
 
 class Suggestions extends StatelessWidget {
   final List<Suggestion> suggestions;
   Suggestions(this.suggestions);
 
-  Size getSize(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    if (width > 1500)
-      return Size.Large;
-    else if (width > 1000)
-      return Size.Medium;
-    else if (width > 500) return Size.Small;
-    return Size.VerySmall;
-  }
-
-  // ignore: missing_return
-  double getFontSize(Size size) {
-    switch (size) {
-      case Size.VerySmall:
-        return 18;
-      case Size.Small:
-        return 22;
-      case Size.Medium:
-        return 26;
-      case Size.Large:
-        return 30;
-    }
-  }
-
-  // ignore: missing_return
-  double getGradientHeight(Size size) {
-    switch (size) {
-      case Size.VerySmall:
-        return 50;
-      case Size.Small:
-        return 75;
-      case Size.Medium:
-        return 100;
-      case Size.Large:
-        return 120;
-    }
-  }
-
   Widget buildChild(BuildContext context, Suggestion suggestion, {bool dragging = false}) {
-    Size size = getSize(context);
-    return Stack(children: <Widget>[
-      Positioned.fill(child: suggestion.getImage()),
-      if (dragging)
+    return SizedBox(
+      child: Stack(children: <Widget>[
+        Positioned.fill(child: suggestion.getImage()),
+        if (dragging)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black54,
+            ),
+          ),
         Positioned.fill(
           child: Container(
-            color: Colors.black54,
-          ),
-        ),
-      Positioned(
-        bottom: 0,
-        height: getGradientHeight(size),
-        left: 0,
-        right: 0,
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.black, Colors.black.withOpacity(0.3), Colors.transparent],
-                //stops: [0.5, 0.9],
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter),
-          ),
-        ),
-      ),
-      Positioned(
-        bottom: 0,
-        left: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Text(
-            suggestion.name,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: getFontSize(size),
-              //shadows: [Shadow(color: Colors.black, blurRadius: 4), Shadow(color: Colors.black, blurRadius: 8)],
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.black, Colors.black.withOpacity(0.3), Colors.transparent, Colors.transparent],
+                  stops: [0, 0.4, 0.9, 1],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter),
             ),
           ),
         ),
-      ),
-    ]);
+        Positioned(
+          bottom: 4,
+          left: 8,
+          right: 8,
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Container(
+              width: 120,
+              child: Text(
+                suggestion.name,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ]),
+    );
   }
 
   Widget buildSuggestion(BuildContext context, int index, Suggestion suggestion) {
@@ -104,13 +61,14 @@ class Suggestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool horizontal = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: GridView.count(
           shrinkWrap: true,
-          crossAxisCount: 4,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
+          crossAxisCount: horizontal ? 3 : 4,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
           childAspectRatio: (3 / 2),
           children: suggestions
               .asMap()
