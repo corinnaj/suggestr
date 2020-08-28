@@ -29,12 +29,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int random = Random().nextInt(primaryColors.length);
+    List<Color> colors = Colors.primaries.getRange(0, 16).toList();
+    int i = Random().nextInt(colors.length);
     return MaterialApp(
       title: 'Suggestr',
       theme: ThemeData(
-        primarySwatch: primaryColors[random],
-        accentColor: accentColors[random],
+        primaryColor: colors[i],
+        accentColor: colors[(i + 2) % 15],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Suggestr(),
