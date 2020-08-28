@@ -63,7 +63,7 @@ class Suggestions extends StatelessWidget {
   Widget build(BuildContext context) {
     bool horizontal = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
       child: GridView.count(
           shrinkWrap: true,
           crossAxisCount: horizontal ? 3 : 4,

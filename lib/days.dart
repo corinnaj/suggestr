@@ -31,32 +31,47 @@ class Days extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    Color c = Theme.of(context).accentColor;
     return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Theme.of(context).primaryColor, Theme.of(context).accentColor],
+        ),
+      ),
       width: MediaQuery.of(context).size.width,
-      child: Row(
-        children: [
-          ...days
-              .asMap()
-              .entries
-              .map((entry) => Expanded(
-                    child: Day(
-                      entry.key,
-                      selectedMeals[entry.key],
-                      onSuggestionChanged,
-                      shouldShowBubble: shouldShowBubble(entry.key),
-                    ),
-                  ))
-              .toList(),
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 14.0, left: 8.0),
-            child: RaisedButton(
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              onPressed: () => Clipboard.setData(ClipboardData(text: exportSuggestions())),
-              child: Icon(Icons.content_copy),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, right: 18.0, left: 18.0),
+        child: Row(
+          children: [
+            ...List.generate(7, (index) => index).map(
+              (i) => Expanded(
+                child: Day(
+                  i,
+                  selectedMeals[i],
+                  onSuggestionChanged,
+                  shouldShowBubble: shouldShowBubble(i),
+                ),
+              ),
             ),
-          )
-        ],
+            Container(
+              width: 60,
+              height: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 6.0, top: 20.0, bottom: 14.0),
+                child: RaisedButton(
+                  hoverColor: c.withOpacity(0.1),
+                  highlightColor: c.withOpacity(0.1),
+                  splashColor: c,
+                  color: Colors.white,
+                  textColor: Colors.black,
+                  onPressed: () => Clipboard.setData(ClipboardData(text: exportSuggestions())),
+                  child: Icon(Icons.content_copy),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -114,6 +129,19 @@ class _DayState extends State<Day> {
     );
   }
 
+  Widget buildBubble(double size) {
+    return Positioned(
+      width: 2 * size,
+      height: 2 * size,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(size)),
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DragTarget<Suggestion>(
@@ -138,15 +166,15 @@ class _DayState extends State<Day> {
       builder: (context, candidate, rejected) {
         const double bubbleSize = 6;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8 - bubbleSize, vertical: 20 - bubbleSize),
+          padding: const EdgeInsets.symmetric(horizontal: 8 - bubbleSize),
           child: Container(
             height: heigth + bubbleSize,
             child: Stack(children: <Widget>[
-              Positioned(
+              Positioned.fill(
                 top: bubbleSize,
                 left: bubbleSize,
                 child: Container(
-                  color: Colors.grey,
+                  color: Colors.white.withOpacity(0.2),
                   height: heigth,
                   child: image(),
                 ),
@@ -175,17 +203,7 @@ class _DayState extends State<Day> {
                 bottom: 4,
                 left: 8 + bubbleSize,
               ),
-              if (widget.shouldShowBubble)
-                Positioned(
-                  width: 2 * bubbleSize,
-                  height: 2 * bubbleSize,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(bubbleSize)),
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
+              if (widget.shouldShowBubble) buildBubble(bubbleSize),
             ]),
           ),
         );

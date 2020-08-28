@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:suggestr/constants.dart';
 import 'package:suggestr/data.dart';
@@ -9,12 +11,30 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final List<Color> primaryColors = [
+    Colors.indigo,
+    Colors.blue,
+    Colors.lime,
+    Colors.orange,
+    Colors.red,
+  ];
+
+  final List<Color> accentColors = [
+    Colors.teal,
+    Colors.pink,
+    Colors.green,
+    Colors.pink,
+    Colors.amber,
+  ];
+
   @override
   Widget build(BuildContext context) {
+    int random = Random().nextInt(primaryColors.length);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Suggestr',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: primaryColors[random],
+        accentColor: accentColors[random],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Suggestr(),
