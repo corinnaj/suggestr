@@ -31,17 +31,20 @@ class Days extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
         children: [
           ...days
               .asMap()
               .entries
-              .map((entry) => Day(
-                    entry.key,
-                    selectedMeals[entry.key],
-                    onSuggestionChanged,
-                    shouldShowBubble: shouldShowBubble(entry.key),
+              .map((entry) => Expanded(
+                    child: Day(
+                      entry.key,
+                      selectedMeals[entry.key],
+                      onSuggestionChanged,
+                      shouldShowBubble: shouldShowBubble(entry.key),
+                    ),
                   ))
               .toList(),
           Padding(
@@ -73,12 +76,11 @@ class Day extends StatefulWidget {
 class _DayState extends State<Day> {
   Suggestion hoveredSuggestion;
   TextEditingController controller = TextEditingController();
-  final double width = 200;
   final double heigth = 150;
 
   Widget image() {
-    if (hoveredSuggestion != null) return hoveredSuggestion.getImage(width: width, height: heigth);
-    if (widget.suggestion != null) return widget.suggestion.getImage(width: width, height: heigth);
+    if (hoveredSuggestion != null) return hoveredSuggestion.getImage(height: heigth);
+    if (widget.suggestion != null) return widget.suggestion.getImage(height: heigth);
     return Container();
   }
 
@@ -138,7 +140,6 @@ class _DayState extends State<Day> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8 - bubbleSize, vertical: 20 - bubbleSize),
           child: Container(
-            width: width + bubbleSize,
             height: heigth + bubbleSize,
             child: Stack(children: <Widget>[
               Positioned(
@@ -147,7 +148,6 @@ class _DayState extends State<Day> {
                 child: Container(
                   color: Colors.grey,
                   height: heigth,
-                  width: width,
                   child: image(),
                 ),
               ),
