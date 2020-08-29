@@ -30,48 +30,89 @@ class Days extends StatelessWidget {
     return result;
   }
 
+  Widget buildExportButton(Color color) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: RaisedButton(
+        hoverColor: color.withOpacity(0.1),
+        highlightColor: color.withOpacity(0.1),
+        splashColor: color,
+        color: Colors.white,
+        textColor: Colors.black,
+        onPressed: () => Clipboard.setData(ClipboardData(text: exportSuggestions())),
+        child: Icon(Icons.content_copy),
+      ),
+    );
+  }
+
+  List<Widget> getDaysFor(List<int> indices) {
+    return indices
+        .map(
+          (i) => Expanded(
+            child: Day(
+              i,
+              selectedMeals[i],
+              onSuggestionChanged,
+              shouldShowBubble: shouldShowBubble(i),
+            ),
+          ),
+        )
+        .toList();
+  }
+
+  Widget buildOneRowLayout(Color color) {
+    return Align(
+      alignment: Alignment.center,
+      child: ConstrainedBox(
+        constraints: BoxConstraints.loose(Size.fromWidth(1500)),
+        child: Row(
+          children: [
+            ...getDaysFor(List.generate(7, (index) => index)),
+            Container(
+              width: 60,
+              height: double.infinity,
+              child: buildExportButton(color),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTwoRowLayout(Color color) {
+    return Column(
+      children: [
+        Expanded(child: Row(children: getDaysFor(List.generate(4, (index) => index)))),
+        Expanded(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ...getDaysFor(List.generate(3, (index) => index + 4)),
+              Expanded(
+                child: buildExportButton(color),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget build(BuildContext context) {
-    Color c = Theme.of(context).accentColor;
+    bool smallLayout = MediaQuery.of(context).size.width < 800;
     return Container(
       height: 200,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Theme.of(context).primaryColor, Theme.of(context).accentColor],
         ),
       ),
-      width: MediaQuery.of(context).size.width,
       child: Padding(
-        padding: const EdgeInsets.only(top: 6.0, bottom: 12.0, right: 18.0, left: 18.0),
-        child: Row(
-          children: [
-            ...List.generate(7, (index) => index).map(
-              (i) => Expanded(
-                child: Day(
-                  i,
-                  selectedMeals[i],
-                  onSuggestionChanged,
-                  shouldShowBubble: shouldShowBubble(i),
-                ),
-              ),
-            ),
-            Container(
-              width: 60,
-              height: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 6.0, top: 20.0, bottom: 14.0),
-                child: RaisedButton(
-                  hoverColor: c.withOpacity(0.1),
-                  highlightColor: c.withOpacity(0.1),
-                  splashColor: c,
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  onPressed: () => Clipboard.setData(ClipboardData(text: exportSuggestions())),
-                  child: Icon(Icons.content_copy),
-                ),
-              ),
-            )
-          ],
-        ),
+        padding: const EdgeInsets.all(4.0),
+        child: smallLayout
+            ? buildTwoRowLayout(Theme.of(context).accentColor)
+            : buildOneRowLayout(Theme.of(context).accentColor),
       ),
     );
   }
@@ -91,11 +132,10 @@ class Day extends StatefulWidget {
 class _DayState extends State<Day> {
   Suggestion hoveredSuggestion;
   TextEditingController controller = TextEditingController();
-  final double heigth = 150;
 
   Widget image() {
-    if (hoveredSuggestion != null) return hoveredSuggestion.getImage(height: heigth);
-    if (widget.suggestion != null) return widget.suggestion.getImage(height: heigth);
+    if (hoveredSuggestion != null) return hoveredSuggestion.getImage();
+    if (widget.suggestion != null) return widget.suggestion.getImage();
     return Container();
   }
 
@@ -129,8 +169,11 @@ class _DayState extends State<Day> {
     );
   }
 
-  Widget buildBubble(double size) {
+  Widget buildBubble() {
+    double size = 6;
     return Positioned(
+      top: -size,
+      left: -size,
       width: 2 * size,
       height: 2 * size,
       child: Container(
@@ -164,18 +207,13 @@ class _DayState extends State<Day> {
         hoveredSuggestion = null;
       }),
       builder: (context, candidate, rejected) {
-        const double bubbleSize = 6;
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8 - bubbleSize),
+          padding: const EdgeInsets.all(4.0),
           child: Container(
-            height: heigth + bubbleSize,
             child: Stack(children: <Widget>[
               Positioned.fill(
-                top: bubbleSize,
-                left: bubbleSize,
                 child: Container(
                   color: Colors.white.withOpacity(0.2),
-                  height: heigth,
                   child: image(),
                 ),
               ),
@@ -188,9 +226,8 @@ class _DayState extends State<Day> {
                       Shadow(color: Colors.black, blurRadius: 8)
                     ]),
                   ),
-                  width: 200,
-                  left: 8 + bubbleSize,
-                  top: 4 + bubbleSize,
+                  left: 8,
+                  top: 4,
                 ),
               Positioned(
                 child: Text(
@@ -201,9 +238,9 @@ class _DayState extends State<Day> {
                   ]),
                 ),
                 bottom: 4,
-                left: 8 + bubbleSize,
+                left: 8,
               ),
-              if (widget.shouldShowBubble) buildBubble(bubbleSize),
+              if (widget.shouldShowBubble) buildBubble(),
             ]),
           ),
         );
