@@ -124,6 +124,60 @@ class Days extends StatelessWidget {
   }
 }
 
+class NameDialog extends StatefulWidget {
+  final Function onSubmit;
+
+  NameDialog(this.onSubmit);
+
+  @override
+  _NameDialogState createState() => _NameDialogState();
+}
+
+class _NameDialogState extends State<NameDialog> {
+  TextEditingController controller = TextEditingController();
+  bool prepareInAdvance = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            autofocus: true,
+            cursorColor: Colors.grey[800],
+            onSubmitted: (s) => widget.onSubmit(controller.text, prepareInAdvance),
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: 'What do you want to cook?',
+              hintStyle: TextStyle(color: Colors.black),
+            ),
+          ),
+          SizedBox(height: 8.0),
+          Row(
+            children: [
+              Checkbox(
+                activeColor: Theme.of(context).primaryColor,
+                onChanged: (bool value) => setState(() => prepareInAdvance = value),
+                value: prepareInAdvance,
+              ),
+              Text('Needs to be prepared in advance'),
+            ],
+          )
+        ],
+      ),
+      actions: [
+        RaisedButton(
+          color: Theme.of(context).primaryColor,
+          child: Text('Confirm'),
+          onPressed: () => widget.onSubmit(controller.text, prepareInAdvance),
+        )
+      ],
+    );
+  }
+}
+
 class Day extends StatefulWidget {
   final int dayIndex;
   final bool shouldShowBubble;
@@ -137,47 +191,26 @@ class Day extends StatefulWidget {
 
 class _DayState extends State<Day> {
   Suggestion hoveredSuggestion;
-  TextEditingController controller = TextEditingController();
+
+  void onSubmit(String text, bool prepareInAdvance) {
+    setState(() {
+      Suggestion old = widget.suggestion;
+      widget.onSuggestionChanged(
+          widget.dayIndex,
+          Suggestion(
+            text,
+            old.pictureUrl,
+            old.description,
+            prepareInAdvance: prepareInAdvance,
+          ));
+      Navigator.of(context).pop();
+    });
+  }
 
   Widget image() {
     if (hoveredSuggestion != null) return hoveredSuggestion.getImage();
     if (widget.suggestion != null) return widget.suggestion.getImage();
     return Container();
-  }
-
-  showNameDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        void onSubmit() {
-          setState(() {
-            Suggestion old = widget.suggestion;
-            widget.onSuggestionChanged(widget.dayIndex, Suggestion(controller.text, old.pictureUrl, old.description));
-            Navigator.of(context).pop();
-          });
-        }
-
-        return AlertDialog(
-          content: TextField(
-            autofocus: true,
-            cursorColor: Colors.grey[800],
-            onSubmitted: (s) => onSubmit(),
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: 'What do you want to cook?',
-              hintStyle: TextStyle(color: Colors.black),
-            ),
-          ),
-          actions: [
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              child: Text('Confirm'),
-              onPressed: () => onSubmit(),
-            )
-          ],
-        );
-      },
-    );
   }
 
   Widget buildBubble() {
@@ -205,7 +238,7 @@ class _DayState extends State<Day> {
         });
         widget.onSuggestionChanged(widget.dayIndex, s);
         if (s.name == 'Something New') {
-          showNameDialog();
+          showDialog(context: context, builder: (context) => NameDialog(onSubmit));
         }
       },
       onWillAccept: (s) {
