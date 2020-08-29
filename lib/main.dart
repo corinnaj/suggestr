@@ -62,6 +62,7 @@ class _SuggestrState extends State<Suggestr> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.refresh),
         onPressed: () => setState(() => currentSuggestions = getNewSuggestions()),
