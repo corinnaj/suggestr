@@ -30,7 +30,7 @@ class Days extends StatelessWidget {
     return result;
   }
 
-  Widget buildExportButton(Color color) {
+  Widget buildExportButton(BuildContext context, Color color) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: RaisedButton(
@@ -39,7 +39,13 @@ class Days extends StatelessWidget {
         splashColor: color,
         color: Colors.white,
         textColor: Colors.black,
-        onPressed: () => Clipboard.setData(ClipboardData(text: exportSuggestions())),
+        onPressed: () {
+          Clipboard.setData(ClipboardData(text: exportSuggestions()));
+          SnackBar snackBar = SnackBar(
+              content: Text('Plan copied to clip board'),
+              action: SnackBarAction(label: 'Dismiss', onPressed: () => Scaffold.of(context).hideCurrentSnackBar()));
+          Scaffold.of(context).showSnackBar(snackBar);
+        },
         child: Icon(Icons.content_copy),
       ),
     );
@@ -60,7 +66,7 @@ class Days extends StatelessWidget {
         .toList();
   }
 
-  Widget buildOneRowLayout(Color color) {
+  Widget buildOneRowLayout(BuildContext context, Color color) {
     return Align(
       alignment: Alignment.center,
       child: ConstrainedBox(
@@ -71,7 +77,7 @@ class Days extends StatelessWidget {
             Container(
               width: 70,
               height: double.infinity,
-              child: buildExportButton(color),
+              child: buildExportButton(context, color),
             )
           ],
         ),
@@ -79,7 +85,7 @@ class Days extends StatelessWidget {
     );
   }
 
-  Widget buildTwoRowLayout(Color color) {
+  Widget buildTwoRowLayout(BuildContext context, Color color) {
     return Column(
       children: [
         Expanded(child: Row(children: getDaysFor(List.generate(4, (index) => index)))),
@@ -89,7 +95,7 @@ class Days extends StatelessWidget {
             children: [
               ...getDaysFor(List.generate(3, (index) => index + 4)),
               Expanded(
-                child: buildExportButton(color),
+                child: buildExportButton(context, color),
               )
             ],
           ),
@@ -111,8 +117,8 @@ class Days extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: smallLayout
-            ? buildTwoRowLayout(Theme.of(context).accentColor)
-            : buildOneRowLayout(Theme.of(context).accentColor),
+            ? buildTwoRowLayout(context, Theme.of(context).accentColor)
+            : buildOneRowLayout(context, Theme.of(context).accentColor),
       ),
     );
   }
