@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+class DraggedSuggestion {
+  final Suggestion suggestion;
+  final int swapIndex;
+
+  DraggedSuggestion(this.suggestion, {this.swapIndex});
+}
+
 class Suggestion {
   final String name;
   final String pictureUrl;

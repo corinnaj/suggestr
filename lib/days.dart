@@ -231,19 +231,22 @@ class _DayState extends State<Day> {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<Suggestion>(
+    return DragTarget<DraggedSuggestion>(
       onAccept: (s) {
         setState(() {
           hoveredSuggestion = null;
         });
-        widget.onSuggestionChanged(widget.dayIndex, s);
-        if (s.name == 'Something New') {
+        widget.onSuggestionChanged(widget.dayIndex, s.suggestion);
+        if (s.swapIndex != null) {
+          widget.onSuggestionChanged(s.swapIndex, widget.suggestion);
+        }
+        if (s.suggestion.name == 'Something New') {
           showDialog(context: context, builder: (context) => NameDialog(onSubmit));
         }
       },
       onWillAccept: (s) {
         setState(() {
-          hoveredSuggestion = s;
+          hoveredSuggestion = s.suggestion;
         });
         return true;
       },
@@ -254,41 +257,49 @@ class _DayState extends State<Day> {
         return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
-            child: Stack(
-              overflow: Overflow.visible,
-              children: <Widget>[
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.white.withOpacity(0.2),
-                    ),
-                    child: image(),
-                    clipBehavior: Clip.antiAlias,
-                  ),
-                ),
-                if (widget.suggestion != null)
+            child: Draggable<DraggedSuggestion>(
+              data: DraggedSuggestion(widget.suggestion, swapIndex: widget.dayIndex),
+              dragAnchor: DragAnchor.pointer,
+              feedback: Opacity(
+                opacity: 0.5,
+                child: widget.suggestion != null ? widget.suggestion.getImage(width: 100, height: 60) : Container(),
+              ),
+              child: Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
                   Positioned.fill(
-                    child: Text(
-                      widget.suggestion.name,
-                      style: TextStyle(color: Colors.white, fontSize: 20, shadows: [
-                        Shadow(color: Colors.black, blurRadius: 4),
-                        Shadow(color: Colors.black, blurRadius: 8)
-                      ]),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.white.withOpacity(0.2),
+                      ),
+                      child: image(),
+                      clipBehavior: Clip.antiAlias,
                     ),
+                  ),
+                  if (widget.suggestion != null)
+                    Positioned.fill(
+                      child: Text(
+                        widget.suggestion.name,
+                        style: TextStyle(color: Colors.white, fontSize: 20, shadows: [
+                          Shadow(color: Colors.black, blurRadius: 4),
+                          Shadow(color: Colors.black, blurRadius: 8)
+                        ]),
+                      ),
+                      left: 8,
+                      top: 4,
+                    ),
+                  Positioned(
+                    child: Text(
+                      days[widget.dayIndex],
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, shadows: []),
+                    ),
+                    bottom: 4,
                     left: 8,
-                    top: 4,
                   ),
-                Positioned(
-                  child: Text(
-                    days[widget.dayIndex],
-                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, shadows: []),
-                  ),
-                  bottom: 4,
-                  left: 8,
-                ),
-                if (widget.shouldShowBubble) buildBubble(),
-              ],
+                  if (widget.shouldShowBubble) buildBubble(),
+                ],
+              ),
             ),
           ),
         );
