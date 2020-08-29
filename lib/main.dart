@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
         primaryColor: colors[i],
         accentColor: colors[(i + 2) % 15],
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.black87),
+        ),
       ),
       home: Suggestr(),
     );

@@ -160,12 +160,17 @@ class _DayState extends State<Day> {
         return AlertDialog(
           content: TextField(
             autofocus: true,
+            cursorColor: Colors.grey[800],
             onSubmitted: (s) => onSubmit(),
             controller: controller,
-            decoration: InputDecoration(labelText: 'What do you want to cook?'),
+            decoration: InputDecoration(
+              labelText: 'What do you want to cook?',
+              hintStyle: TextStyle(color: Colors.black),
+            ),
           ),
           actions: [
             RaisedButton(
+              color: Theme.of(context).primaryColor,
               child: Text('Confirm'),
               onPressed: () => onSubmit(),
             )

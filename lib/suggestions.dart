@@ -56,6 +56,7 @@ class Suggestions extends StatelessWidget {
 
   Widget buildSuggestion(BuildContext context, int index, Suggestion suggestion) {
     return Draggable<Suggestion>(
+      dragAnchor: DragAnchor.pointer,
       feedback: Opacity(
         opacity: 0.5,
         child: suggestion.getImage(width: 100, height: 60),
