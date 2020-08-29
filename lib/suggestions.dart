@@ -6,8 +6,8 @@ class Suggestions extends StatelessWidget {
   Suggestions(this.suggestions);
 
   Widget buildChild(BuildContext context, Suggestion suggestion, {bool dragging = false}) {
-    return SizedBox(
-      child: Stack(children: <Widget>[
+    return Stack(
+      children: <Widget>[
         Positioned.fill(child: suggestion.getImage()),
         if (dragging)
           Positioned.fill(
@@ -43,7 +43,7 @@ class Suggestions extends StatelessWidget {
             ),
           ),
         ),
-      ]),
+      ],
     );
   }
 
@@ -62,19 +62,30 @@ class Suggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool horizontal = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 24.0),
-      child: GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: horizontal ? 3 : 4,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: (3 / 2),
-          children: suggestions
-              .asMap()
-              .map((int index, Suggestion suggestion) => MapEntry(index, buildSuggestion(context, index, suggestion)))
-              .values
-              .toList()),
+    double padding = 16;
+    return FittedBox(
+      alignment: Alignment.topCenter,
+      fit: BoxFit.contain,
+      child: Container(
+        width: horizontal ? 3.0 * (600 + padding) : 4.0 * (600 + padding),
+        height: horizontal ? 4.0 * (400 + padding) : 3.0 * (400 + padding),
+        child: Padding(
+          padding: EdgeInsets.all(padding),
+          child: GridView.count(
+              shrinkWrap: true,
+              primary: false,
+              crossAxisCount: horizontal ? 3 : 4,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: (3 / 2),
+              children: suggestions
+                  .asMap()
+                  .map((int index, Suggestion suggestion) =>
+                      MapEntry(index, buildSuggestion(context, index, suggestion)))
+                  .values
+                  .toList()),
+        ),
+      ),
     );
   }
 }

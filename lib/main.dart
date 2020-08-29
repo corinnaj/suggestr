@@ -86,7 +86,7 @@ class _SuggestrState extends State<Suggestr> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Days(selectedMeals, onSuggestionChanged, shouldShowBubble),
-          Suggestions(currentSuggestions),
+          Expanded(child: Suggestions(currentSuggestions)),
         ],
       ),
     );
