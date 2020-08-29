@@ -69,7 +69,7 @@ class Days extends StatelessWidget {
           children: [
             ...getDaysFor(List.generate(7, (index) => index)),
             Container(
-              width: 60,
+              width: 70,
               height: double.infinity,
               child: buildExportButton(color),
             )
@@ -178,7 +178,7 @@ class _DayState extends State<Day> {
       height: 2 * size,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(size)),
+          borderRadius: BorderRadius.circular(size),
           color: Colors.white,
         ),
       ),
@@ -210,38 +210,42 @@ class _DayState extends State<Day> {
         return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
-            child: Stack(children: <Widget>[
-              Positioned.fill(
-                child: Container(
-                  color: Colors.white.withOpacity(0.2),
-                  child: image(),
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.white.withOpacity(0.2),
+                    ),
+                    child: image(),
+                    clipBehavior: Clip.antiAlias,
+                  ),
                 ),
-              ),
-              if (widget.suggestion != null)
+                if (widget.suggestion != null)
+                  Positioned.fill(
+                    child: Text(
+                      widget.suggestion.name,
+                      style: TextStyle(color: Colors.white, fontSize: 20, shadows: [
+                        Shadow(color: Colors.black, blurRadius: 4),
+                        Shadow(color: Colors.black, blurRadius: 8)
+                      ]),
+                    ),
+                    left: 8,
+                    top: 4,
+                  ),
                 Positioned(
                   child: Text(
-                    widget.suggestion.name,
-                    style: TextStyle(color: Colors.white, fontSize: 20, shadows: [
-                      Shadow(color: Colors.black, blurRadius: 4),
-                      Shadow(color: Colors.black, blurRadius: 8)
-                    ]),
+                    days[widget.dayIndex],
+                    style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900, shadows: []),
                   ),
+                  bottom: 4,
                   left: 8,
-                  top: 4,
                 ),
-              Positioned(
-                child: Text(
-                  days[widget.dayIndex],
-                  style: TextStyle(color: Colors.white, fontSize: 40, shadows: [
-                    Shadow(color: Colors.black, blurRadius: 4),
-                    Shadow(color: Colors.black, blurRadius: 8)
-                  ]),
-                ),
-                bottom: 4,
-                left: 8,
-              ),
-              if (widget.shouldShowBubble) buildBubble(),
-            ]),
+                if (widget.shouldShowBubble) buildBubble(),
+              ],
+            ),
           ),
         );
       },

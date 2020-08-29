@@ -1,1 +1,1 @@
-const List<String> days = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'];
+const List<String> days = ['THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE', 'WED'];

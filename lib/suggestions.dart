@@ -6,44 +6,51 @@ class Suggestions extends StatelessWidget {
   Suggestions(this.suggestions);
 
   Widget buildChild(BuildContext context, Suggestion suggestion, {bool dragging = false}) {
-    return Stack(
-      children: <Widget>[
-        Positioned.fill(child: suggestion.getImage()),
-        if (dragging)
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Stack(
+        children: <Widget>[
           Positioned.fill(
             child: Container(
-              color: Colors.black54,
+              child: suggestion.getImage(),
             ),
           ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.black, Colors.black.withOpacity(0.3), Colors.transparent, Colors.transparent],
-                  stops: [0, 0.4, 0.9, 1],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter),
+          if (dragging)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black54,
+              ),
             ),
-          ),
-        ),
-        Positioned(
-          bottom: 4,
-          left: 8,
-          right: 8,
-          child: FittedBox(
-            fit: BoxFit.fitWidth,
+          Positioned.fill(
             child: Container(
-              width: 120,
-              child: Text(
-                suggestion.name,
-                style: TextStyle(
-                  color: Colors.white,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.black, Colors.black.withOpacity(0.3), Colors.transparent, Colors.transparent],
+                    stops: [0, 0.4, 0.9, 1],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 4,
+            left: 8,
+            right: 8,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Container(
+                width: 120,
+                child: Text(
+                  suggestion.name,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

@@ -11,22 +11,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final List<Color> primaryColors = [
-    Colors.indigo,
-    Colors.blue,
-    Colors.lime,
-    Colors.orange,
-    Colors.red,
-  ];
-
-  final List<Color> accentColors = [
-    Colors.teal,
-    Colors.pink,
-    Colors.green,
-    Colors.pink,
-    Colors.amber,
-  ];
-
   @override
   Widget build(BuildContext context) {
     List<Color> colors = Colors.primaries.getRange(0, 16).toList();
