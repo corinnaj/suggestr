@@ -206,4 +206,9 @@ final List<Suggestion> suggestions = [
     'summer_rolls.jpg',
     '',
   ),
+  Suggestion(
+    'Folienkartoffel mit Mojo Rojo',
+    'folienkartoffel.jpg',
+    'Internationales Kartoffelkochbuch - page 122',
+  ),
 ];
