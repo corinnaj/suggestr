@@ -76,7 +76,7 @@ class Suggestions extends StatelessWidget {
       fit: BoxFit.contain,
       child: Container(
         width: horizontal ? 3.0 * (600 + padding) : 4.0 * (600 + padding),
-        height: horizontal ? 4.0 * (400 + padding) : 3.0 * (400 + padding),
+        height: (horizontal ? 4.0 * (400 + padding) : 3.0 * (400 + padding)) + padding,
         child: Padding(
           padding: EdgeInsets.all(padding),
           child: GridView.count(
