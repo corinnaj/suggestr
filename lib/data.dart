@@ -82,7 +82,7 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Pizza',
-    '',
+    'pizza.jpg',
     '',
     prepareInAdvance: true,
   ),
@@ -148,8 +148,8 @@ final List<Suggestion> suggestions = [
     'https://www.vegrecipesofindia.com/singapore-fried-rice-recipe/',
   ),
   Suggestion(
-    'Chilli',
-    '',
+    'Chili',
+    'chili.jpg',
     '',
     prepareInAdvance: true,
   ),
@@ -217,5 +217,10 @@ final List<Suggestion> suggestions = [
     'Folienkartoffel mit Mojo Rojo',
     'folienkartoffel.jpg',
     'Internationales Kartoffelkochbuch - page 122',
+  ),
+  Suggestion(
+    'Pav Bhaji',
+    '',
+    'https://www.vegrecipesofindia.com/pav-bhaji-recipe-mumbai-pav-bhaji-a-fastfood-recipe-from-mumbai/',
   ),
 ];
