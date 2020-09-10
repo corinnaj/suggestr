@@ -146,12 +146,10 @@ class _NameDialogState extends State<NameDialog> {
         children: [
           TextField(
             autofocus: true,
-            cursorColor: Colors.grey[800],
             onSubmitted: (s) => widget.onSubmit(controller.text, prepareInAdvance),
             controller: controller,
             decoration: InputDecoration(
               labelText: 'What do you want to cook?',
-              hintStyle: TextStyle(color: Colors.black),
             ),
           ),
           SizedBox(height: 8.0),
