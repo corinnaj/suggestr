@@ -108,7 +108,7 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Little Italy Burger',
-    '',
+    'little_italy_burger.jpg',
     'Burger Cookbook',
   ),
   Suggestion(
@@ -124,7 +124,7 @@ final List<Suggestion> suggestions = [
   ),
   Suggestion(
     'Butter Cauliflower',
-    '',
+    'butter_cauliflower.jpg',
     'https://tasty.co/recipe/easy-butter-chicken',
   ),
   Suggestion(
