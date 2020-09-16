@@ -4,12 +4,12 @@ import 'package:suggestr/constants.dart';
 import 'package:suggestr/data.dart';
 
 class Days extends StatelessWidget {
-  final List<Suggestion> selectedMeals;
-  final Function onSuggestionChanged;
+  final List<Meal> selectedMeals;
+  final Function onSuggestedMealChanged;
   final Function shouldShowBubble;
-  Days(this.selectedMeals, this.onSuggestionChanged, this.shouldShowBubble);
+  Days(this.selectedMeals, this.onSuggestedMealChanged, this.shouldShowBubble);
 
-  String exportSuggestions() {
+  String exportMealPlan() {
     String result = '';
     for (int i = 0; i < 7; i++) {
       if (selectedMeals[i] != null || shouldShowBubble(i)) {
@@ -40,7 +40,7 @@ class Days extends StatelessWidget {
         color: Colors.white,
         textColor: Colors.black,
         onPressed: () {
-          Clipboard.setData(ClipboardData(text: exportSuggestions()));
+          Clipboard.setData(ClipboardData(text: exportMealPlan()));
           SnackBar snackBar = SnackBar(
               content: Text('Plan copied to clip board'),
               action: SnackBarAction(label: 'Dismiss', onPressed: () => Scaffold.of(context).hideCurrentSnackBar()));
@@ -58,7 +58,7 @@ class Days extends StatelessWidget {
             child: Day(
               i,
               selectedMeals[i],
-              onSuggestionChanged,
+              onSuggestedMealChanged,
               shouldShowBubble: shouldShowBubble(i),
             ),
           ),
@@ -179,23 +179,23 @@ class _NameDialogState extends State<NameDialog> {
 class Day extends StatefulWidget {
   final int dayIndex;
   final bool shouldShowBubble;
-  final Suggestion suggestion;
-  final Function onSuggestionChanged;
-  Day(this.dayIndex, this.suggestion, this.onSuggestionChanged, {this.shouldShowBubble = false});
+  final Meal meal;
+  final Function onSuggestedMealChanged;
+  Day(this.dayIndex, this.meal, this.onSuggestedMealChanged, {this.shouldShowBubble = false});
 
   @override
   _DayState createState() => _DayState();
 }
 
 class _DayState extends State<Day> {
-  Suggestion hoveredSuggestion;
+  Meal hoveredMeal;
 
   void onSubmit(String text, bool prepareInAdvance) {
     setState(() {
-      Suggestion old = widget.suggestion;
-      widget.onSuggestionChanged(
+      Meal old = widget.meal;
+      widget.onSuggestedMealChanged(
           widget.dayIndex,
-          Suggestion(
+          Meal(
             text,
             old.pictureUrl,
             old.description,
@@ -206,8 +206,8 @@ class _DayState extends State<Day> {
   }
 
   Widget image() {
-    if (hoveredSuggestion != null) return hoveredSuggestion.getImage();
-    if (widget.suggestion != null) return widget.suggestion.getImage();
+    if (hoveredMeal != null) return hoveredMeal.getImage();
+    if (widget.meal != null) return widget.meal.getImage();
     return Container();
   }
 
@@ -229,38 +229,38 @@ class _DayState extends State<Day> {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget<DraggedSuggestion>(
+    return DragTarget<DraggedMeal>(
       onAccept: (s) {
         setState(() {
-          hoveredSuggestion = null;
+          hoveredMeal = null;
         });
-        widget.onSuggestionChanged(widget.dayIndex, s.suggestion);
+        widget.onSuggestedMealChanged(widget.dayIndex, s.meal);
         if (s.swapIndex != null) {
-          widget.onSuggestionChanged(s.swapIndex, widget.suggestion);
+          widget.onSuggestedMealChanged(s.swapIndex, widget.meal);
         }
-        if (s.suggestion.name == 'Something New') {
+        if (s.meal.name == 'Something New') {
           showDialog(context: context, builder: (context) => NameDialog(onSubmit));
         }
       },
       onWillAccept: (s) {
         setState(() {
-          hoveredSuggestion = s.suggestion;
+          hoveredMeal = s.meal;
         });
         return true;
       },
       onLeave: (s) => setState(() {
-        hoveredSuggestion = null;
+        hoveredMeal = null;
       }),
       builder: (context, candidate, rejected) {
         return Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
-            child: Draggable<DraggedSuggestion>(
-              data: DraggedSuggestion(widget.suggestion, swapIndex: widget.dayIndex),
+            child: Draggable<DraggedMeal>(
+              data: DraggedMeal(widget.meal, swapIndex: widget.dayIndex),
               dragAnchor: DragAnchor.pointer,
               feedback: Opacity(
                 opacity: 0.5,
-                child: widget.suggestion != null ? widget.suggestion.getImage(width: 100, height: 60) : Container(),
+                child: widget.meal != null ? widget.meal.getImage(width: 100, height: 60) : Container(),
               ),
               child: Stack(
                 overflow: Overflow.visible,
@@ -275,10 +275,10 @@ class _DayState extends State<Day> {
                       clipBehavior: Clip.antiAlias,
                     ),
                   ),
-                  if (widget.suggestion != null)
+                  if (widget.meal != null)
                     Positioned.fill(
                       child: Text(
-                        widget.suggestion.name,
+                        widget.meal.name,
                         style: TextStyle(color: Colors.white, fontSize: 20, shadows: [
                           Shadow(color: Colors.black, blurRadius: 4),
                           Shadow(color: Colors.black, blurRadius: 8)

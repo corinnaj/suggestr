@@ -37,26 +37,25 @@ class Suggestr extends StatefulWidget {
 }
 
 class _SuggestrState extends State<Suggestr> {
-  List<Suggestion> currentSuggestions;
-  List<Suggestion> selectedMeals = List.generate(7, (index) => null);
+  List<Meal> currentSuggestedMeals;
+  List<Meal> selectedMeals = List.generate(7, (index) => null);
   TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    currentSuggestions = getNewSuggestions();
+    currentSuggestedMeals = getNewMeals();
   }
 
-  List<Suggestion> getNewSuggestions() {
-    suggestions.shuffle();
-    List<Suggestion> temp = suggestions.sublist(0, 12);
+  List<Meal> getNewMeals() {
+    meals.shuffle();
+    List<Meal> temp = meals.sublist(0, 12);
     temp[0] = somethingNew;
     return temp;
   }
 
-  List<Suggestion> getSuggestionsFor(String filterString) {
-    List<Suggestion> filtered =
-        suggestions.where((s) => s.name.toLowerCase().contains(filterString.toLowerCase())).toList();
+  List<Meal> getMealsFor(String filterString) {
+    List<Meal> filtered = meals.where((s) => s.name.toLowerCase().contains(filterString.toLowerCase())).toList();
     int maxAmount = min(11, filtered.length);
     filtered = filtered.sublist(0, maxAmount);
     filtered.insert(0, somethingNew);
@@ -67,9 +66,9 @@ class _SuggestrState extends State<Suggestr> {
     return index < days.length - 1 && selectedMeals[index + 1] != null && selectedMeals[index + 1].prepareInAdvance;
   }
 
-  void onSuggestionChanged(int index, Suggestion newSuggestion) {
+  void onSuggestedMealChanged(int index, Meal newMeal) {
     setState(() {
-      selectedMeals[index] = newSuggestion;
+      selectedMeals[index] = newMeal;
     });
   }
 
@@ -79,14 +78,14 @@ class _SuggestrState extends State<Suggestr> {
       backgroundColor: Colors.grey[900],
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.refresh),
-        onPressed: () => setState(() => currentSuggestions = getNewSuggestions()),
+        onPressed: () => setState(() => currentSuggestedMeals = getNewMeals()),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Days(selectedMeals, onSuggestionChanged, shouldShowBubble),
+            Days(selectedMeals, onSuggestedMealChanged, shouldShowBubble),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -98,7 +97,7 @@ class _SuggestrState extends State<Suggestr> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                       ),
-                      onChanged: (input) => (setState(() => currentSuggestions = getSuggestionsFor(input))),
+                      onChanged: (input) => (setState(() => currentSuggestedMeals = getMealsFor(input))),
                       style: TextStyle(color: Colors.white, decorationColor: Colors.white),
                     ),
                     width: 200,
@@ -109,13 +108,13 @@ class _SuggestrState extends State<Suggestr> {
                   onPressed: () {
                     if (_searchController.text != "") {
                       _searchController.clear();
-                      setState(() => currentSuggestions = getNewSuggestions());
+                      setState(() => currentSuggestedMeals = getNewMeals());
                     }
                   },
                 ),
               ],
             ),
-            Expanded(child: Suggestions(currentSuggestions)),
+            Expanded(child: Suggestions(currentSuggestedMeals)),
           ],
         ),
       ),
