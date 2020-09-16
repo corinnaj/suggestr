@@ -134,12 +134,12 @@ final List<Meal> meals = [
   ),
   Meal(
     'Sommerpilaw',
-    '',
+    'sommerpilaw.jpg',
     'Asien Vegetarisch - page 140',
   ),
   Meal(
     'Rote Bete Reis',
-    '',
+    'rote_bete_reis.jpg',
     'Asien Vegetarisch - page 153',
   ),
   Meal(
