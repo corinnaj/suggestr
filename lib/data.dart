@@ -223,4 +223,9 @@ final List<Meal> meals = [
     '',
     'https://www.vegrecipesofindia.com/pav-bhaji-recipe-mumbai-pav-bhaji-a-fastfood-recipe-from-mumbai/',
   ),
+  Meal(
+    'Bonchi Curry',
+    'bonchi_curry.jpg',
+    'World Vegetarian - page 208',
+  ),
 ];
