@@ -71,7 +71,7 @@ final List<Meal> meals = [
   ),
   Meal(
     'Dosa & Aloo Masala',
-    '',
+    'aloo_masala.jpg',
     'https://cooking.nytimes.com/recipes/1020908-dosa',
     prepareInAdvance: true,
   ),
