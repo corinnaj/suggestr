@@ -1,5 +1,5 @@
 addons:
-  ssh_known_hosts: "tmbe.me"
+  ssh_known_hosts: corinnaj.me
 before_script:
 - git clone https://github.com/flutter/flutter.git
 - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
@@ -15,6 +15,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build/web tom@tmbe.me:/home/tom/www/suggestr
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/build/web ubuntu@corinnaj.me:/home/ubuntu/www/suggestr.corinnaj.me
   on:
     branch: master
