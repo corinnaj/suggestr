@@ -228,4 +228,14 @@ final List<Meal> meals = [
     'bonchi_curry.jpg',
     'World Vegetarian - page 208',
   ),
+  Meal(
+    'Carrot & Fennel Soup',
+    'carrot_fennel_soup.jpg',
+    'https://www.jamieoliver.com/recipes/vegetables-recipes/roast-carrot-fennel-soup/',
+  ),
+  Meal(
+    'Ratatouille',
+    'ratatouille.jpg',
+    'www.baked-in.com/2014/09/07/confit-byaldi-aka-ratatouilles-ratatouille/',
+  ),
 ];
